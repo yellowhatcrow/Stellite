@@ -2279,8 +2279,8 @@ bool Blockchain::check_tx_inputs(transaction& tx, uint64_t& max_used_block_heigh
 
   size_t mixin = tx.vin[0].type() == typeid(txin_to_key) ? boost::get<txin_to_key>(tx.vin[0]).key_offsets.size() : 0;
   //Reject transaction with mixin count over 15
-  //25 is the V4 fork height.
-  if(mixin > 15 && m_db->height() > 25){
+  //12 is the V4 fork height.
+  if(mixin > 15 && m_db->height() > 12){
     LOG_PRINT_L1("tx " << mixin << " ring size greater than 15, rejecting tx due to possible spam attack.");
     return false;
   }
