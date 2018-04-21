@@ -86,15 +86,19 @@ static const struct {
   uint64_t height;
   uint8_t threshold;
   time_t time;
-} mainnet_hard_forks[] = {
+} 
+mainnet_hard_forks[] = {
   // version 1 from the start of the blockchain
   { 1, 1, 0, 1341378000 },
  
-  // Version 2 starts from block 67500, fork time decided on 2018-03-09
-  { 2, 67500, 0, 1520584977 },
+  // Version 2 starts from block 10
+  { 2, 10, 0, 1520584977 },
 
-  // Version 3 starts from block 100800, fork time decided on 2018-04-01 
-  { 3, 100800, 0, 1522557835 },
+  // Version 3 starts from block 11 
+  { 3, 11, 0, 1522557835 },
+
+  // Version 4 starts from block 12 
+  { 4, 12, 0, 1522557836 },
 
 };
 static const uint64_t mainnet_hard_fork_version_1_till = (uint64_t)-1;
@@ -1020,7 +1024,7 @@ bool Blockchain::validate_miner_transaction(const block& b, size_t cumulative_bl
     return false;
   }
   // From hard fork 4, we allow a miner to claim less block reward than is allowed, in case a miner wants less dust
-  if (m_hardfork->get_current_version() < 4)
+  if (m_hardfork->get_current_version() < 5)
   {
     if(base_reward + fee != money_in_use && already_generated_coins > 0)
     {
@@ -2273,6 +2277,14 @@ bool Blockchain::check_tx_inputs(transaction& tx, uint64_t& max_used_block_heigh
   LOG_PRINT_L3("Blockchain::" << __func__);
   CRITICAL_REGION_LOCAL(m_blockchain_lock);
 
+  size_t mixin = tx.vin[0].type() == typeid(txin_to_key) ? boost::get<txin_to_key>(tx.vin[0]).key_offsets.size() : 0;
+  //Reject transaction with mixin count over 15
+  //25 is the V4 fork height.
+  if(mixin > 15 && m_db->height() > 25){
+    LOG_PRINT_L1("tx " << mixin << " ring size greater than 15, rejecting tx due to possible spam attack.");
+    return false;
+  }
+
 #if defined(PER_BLOCK_CHECKPOINT)
   // check if we're doing per-block checkpointing
   // FIXME: investigate why this block returns
@@ -2314,7 +2326,7 @@ bool Blockchain::check_tx_outputs(const transaction& tx, tx_verification_context
   CRITICAL_REGION_LOCAL(m_blockchain_lock);
 
   // from hard fork 2, we forbid dust and compound outputs
-  if (m_hardfork->get_current_version() >= 4) {
+  if (m_hardfork->get_current_version() >= 5) {
     for (auto &o: tx.vout) {
       if (tx.version == 1)
       {
@@ -2451,9 +2463,9 @@ bool Blockchain::check_tx_inputs(transaction& tx, tx_verification_context &tvc, 
 
   const uint8_t hf_version = m_hardfork->get_current_version();
 
-  // from hard fork 4, we require mixin at least 2 unless one output cannot mix with 2 others
+  // from hard fork 5, we require mixin at least 2 unless one output cannot mix with 2 others
   // if one output cannot mix with 2 others, we accept at most 1 output that can mix
-  if (hf_version >= 4)
+  if (hf_version >= 5)
   {
     size_t n_unmixable = 0, n_mixable = 0;
     size_t mixin = std::numeric_limits<size_t>::max();
