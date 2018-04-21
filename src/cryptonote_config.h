@@ -98,7 +98,7 @@
 #define BLOCKS_SYNCHRONIZING_DEFAULT_COUNT              20     //by default, blocks count in blocks downloading
 #define CRYPTONOTE_PROTOCOL_HOP_RELAX_COUNT             3      //value of hop, after which we use only announce of new block
 
-#define CRYPTONOTE_MEMPOOL_TX_LIVETIME                  (86400*2) //seconds, one day
+#define CRYPTONOTE_MEMPOOL_TX_LIVETIME                  (86400*2) //seconds, two day
 #define CRYPTONOTE_MEMPOOL_TX_FROM_ALT_BLOCK_LIVETIME     604800 //seconds, one week
 
 #define COMMAND_RPC_GET_BLOCKS_FAST_MAX_COUNT           1000
@@ -136,7 +136,7 @@
 
 #define THREAD_STACK_SIZE                       5 * 1024 * 1024
 
-#define HF_VERSION_DYNAMIC_FEE                  4
+#define HF_VERSION_DYNAMIC_FEE                  6
 #define HF_VERSION_MIN_MIXIN_4                  6
 #define HF_VERSION_ENFORCE_RCT                  6
 
