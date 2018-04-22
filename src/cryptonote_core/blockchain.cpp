@@ -95,10 +95,10 @@ mainnet_hard_forks[] = {
   { 2, 10, 0, 1520584977 },
 
   // Version 3 starts from block 11 
-  { 3, 11, 0, 1522557835 },
+  { 3, 15, 0, 1522557835 },
 
   // Version 4 starts from block 12 
-  { 4, 12, 0, 1522557836 },
+  { 4, 25, 0, 1522557836 },
 
 };
 static const uint64_t mainnet_hard_fork_version_1_till = (uint64_t)-1;
@@ -2280,7 +2280,7 @@ bool Blockchain::check_tx_inputs(transaction& tx, uint64_t& max_used_block_heigh
   size_t mixin = tx.vin[0].type() == typeid(txin_to_key) ? boost::get<txin_to_key>(tx.vin[0]).key_offsets.size() : 0;
   //Reject transaction with mixin count over 15
   //12 is the V4 fork height.
-  if(mixin > 15 && m_db->height() > 12){
+  if(mixin > 15 && m_db->height() > 25){
     LOG_PRINT_L1("tx " << mixin << " ring size greater than 15, rejecting tx due to possible spam attack.");
     return false;
   }
