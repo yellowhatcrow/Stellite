@@ -2363,7 +2363,8 @@ bool simple_wallet::transfer_main(int transfer_type, const std::vector<std::stri
     else
     {
       if(ring_size > 15){
-        return false;
+      
+      fail_msg_writer() << tr("max ring size allowed is 15");  return false;
       }
       else
       {
@@ -2946,7 +2947,9 @@ bool simple_wallet::sweep_main(uint64_t below, const std::vector<std::string> &a
     else
     {
       if(ring_size > 15){
-        return false;
+fail_msg_writer() << tr("max ring size allowed is 15");      
+
+  return false;
       }
       else
       {

@@ -95,10 +95,10 @@ mainnet_hard_forks[] = {
   { 2, 10, 0, 1520584977 },
 
   // Version 3 starts from block 11 
-  { 3, 11, 0, 1522557835 },
+  { 3, 15, 0, 1522557835 },
 
   // Version 4 starts from block 12 
-  { 4, 12, 0, 1522557836 },
+  { 4, 25, 0, 1522557836 },
 
 };
 static const uint64_t mainnet_hard_fork_version_1_till = (uint64_t)-1;

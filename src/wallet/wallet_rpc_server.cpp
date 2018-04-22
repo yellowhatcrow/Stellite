@@ -688,7 +688,11 @@ namespace tools
     try
     {
       uint64_t mixin = adjust_mixin(req.mixin);
-      std::vector<wallet2::pending_tx> ptx_vector = m_wallet->create_transactions_all(req.below_amount, dsts[0].addr, mixin, req.unlock_time, req.priority, extra, m_trusted_daemon);
+      if(mixin > 15){
+        return false;
+      }
+
+       std::vector<wallet2::pending_tx> ptx_vector = m_wallet->create_transactions_all(req.below_amount, dsts[0].addr, mixin, req.unlock_time, req.priority, extra, m_trusted_daemon);
 
       if (!req.do_not_relay)
         m_wallet->commit_tx(ptx_vector);
