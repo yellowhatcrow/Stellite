@@ -2363,8 +2363,7 @@ bool simple_wallet::transfer_main(int transfer_type, const std::vector<std::stri
     else
     {
       if(ring_size > 15){
-           fail_msg_writer() << tr("Ring size too high, max 15");
-          return false;
+        return false;
       }
       else
       {
@@ -2522,13 +2521,12 @@ bool simple_wallet::transfer_main(int transfer_type, const std::vector<std::stri
         break;
     }
 
-/*
     if (ptx_vector.empty())
     {
       fail_msg_writer() << tr("No outputs found, or daemon is not ready");
       return true;
     }
-*/
+
     // if we need to check for backlog, check the worst case tx
     if (m_wallet->confirm_backlog())
     {
@@ -2948,8 +2946,7 @@ bool simple_wallet::sweep_main(uint64_t below, const std::vector<std::string> &a
     else
     {
       if(ring_size > 15){
-                  fail_msg_writer() << tr("Ring size too high, max 15");
-          return false;
+        return false;
       }
       else
       {
